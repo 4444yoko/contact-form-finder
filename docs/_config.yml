@@ -1,0 +1,6 @@
+# GitHub Pages (Jekyll) 設定
+# https://docs.github.com/en/pages/setting-up-a-github-pages-site-with-jekyll
+title: Contact Form Finder
+description: 問い合わせフォーム検索＆下書き入力 Chrome 拡張機能
+theme: jekyll-theme-cayman
+lang: ja

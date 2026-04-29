@@ -1,0 +1,77 @@
+<!--
+  Contact Form Finder
+  Copyright (c) 2026 Yuki Yokoyama
+  Licensed under the MIT License
+-->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>Contact Form Finder</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header>
+    <h1>問い合わせフォームを探す</h1>
+    <p class="subtitle">現在開いているページから候補リンクを抽出します</p>
+  </header>
+
+  <!-- メインアクション -->
+  <button id="findBtn" type="button">このサイトで探す</button>
+
+  <!-- ===== オートフィル（テキストエリア検出時のみ表示） ===== -->
+  <section id="autofillSection" class="autofill-section hidden">
+    <div class="divider"></div>
+    <button id="autofillBtn" class="autofill-btn" type="button">📝 このフォームに入力</button>
+    <p class="autofill-hint">送信はしません。入力内容は必ず人間が確認してください</p>
+  </section>
+
+  <!-- ===== 履歴バナー（同じドメインに対応履歴があれば表示） ===== -->
+  <div id="historyBanner" class="history-banner hidden" role="status">
+    <div class="hb-icon">📌</div>
+    <div class="hb-content">
+      <strong>このサイトには対応履歴があります</strong>
+      <div id="historyBannerBody" class="hb-body"></div>
+      <button id="goToHistoryLink" class="link-btn" type="button">履歴一覧を開く →</button>
+    </div>
+  </div>
+
+  <!-- 警告（営業お断り / CAPTCHA） -->
+  <div id="warnings" class="warnings"></div>
+
+  <!-- 状態メッセージ -->
+  <div id="status" class="status" role="status" aria-live="polite"></div>
+
+  <!-- find結果 -->
+  <ul id="results" class="result-list"></ul>
+
+  <!-- ===== テンプレート選択（autofillの後段UI） ===== -->
+  <div id="picker" class="picker hidden">
+    <div class="picker-bar">
+      <strong>テンプレートを選んで入力</strong>
+      <button id="cancelPickerBtn" class="link-btn" type="button">戻る</button>
+    </div>
+
+    <label class="recipient-row">
+      <span class="recipient-label">宛先の会社名（本文中の <code>{会社名}</code> に入る値）</span>
+      <input id="recipientInput" type="text" placeholder="ページから自動取得">
+    </label>
+
+    <ul id="pickerList" class="picker-list" aria-live="polite"></ul>
+
+    <div id="pickerEmpty" class="picker-empty hidden">
+      テンプレートが登録されていません。<br>
+      <button id="goToOptionsLink" class="link-btn" type="button">⚙ テンプレート管理を開く</button>
+    </div>
+  </div>
+
+  <footer class="meta">
+    <button id="openOptionsBtn" class="link-btn" type="button">⚙ テンプレート管理</button>
+    <span class="version">v1.0.0</span>
+  </footer>
+  <p class="caution-text">送信前に必ず内容を確認してください</p>
+
+  <script src="lib/storage.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

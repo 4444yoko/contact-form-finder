@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Node (for future dev tools, none currently)
+node_modules/
+
+# Logs / temp
+*.log
+*.tmp
+
+# 開発時のテストファイル（リリース対象外）
+_test_*.js
+_release_prep.py

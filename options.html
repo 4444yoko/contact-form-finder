@@ -1,0 +1,192 @@
+<!--
+  Contact Form Finder
+  Copyright (c) 2026 Yuki Yokoyama
+  Licensed under the MIT License
+-->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>Contact Form Finder - 設定</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <h1>Contact Form Finder</h1>
+      <span class="header-sub">設定</span>
+      <nav class="header-nav">
+        <a href="history.html" class="header-link">📊 送信履歴</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- 自動送信ツールではないことを明示 -->
+  <div class="notice notice-warning">
+    <strong>⚠ 自動送信ツールではありません</strong>
+    <span>このツールは作業効率化のための「下書き補助」です。フォームに入力した内容は、必ず人間が目で確認してから送信してください。</span>
+  </div>
+
+  <main>
+    <!-- ===== ユーザー設定 ===== -->
+    <section class="section">
+      <div class="section-header">
+        <h2>あなたの情報</h2>
+        <div class="section-actions">
+          <button id="exportBtn" type="button" class="ghost" title="設定とテンプレートを JSON ファイルでバックアップ">⤓ エクスポート</button>
+          <button id="importBtn" type="button" class="ghost" title="JSON ファイルから設定とテンプレートを復元">⤒ インポート</button>
+        </div>
+      </div>
+      <p class="section-desc">
+        フォーム自動入力で使う基本情報です。<code>{自分の名前}</code> は本文テンプレート内でも置換されます。
+      </p>
+
+      <!-- プライバシーの安心メッセージ -->
+      <div class="privacy-notice">
+        <div class="pn-title">🔒 入力情報は外部へ出ません</div>
+        <ul class="pn-list">
+          <li>入力内容は<strong>あなたのブラウザ内（chrome.storage.local）にのみ</strong>保存されます</li>
+          <li>外部サーバー・開発者・第三者には<strong>一切送信されません</strong>（この拡張機能には通信機能自体がありません）</li>
+          <li>用途は<strong>あなたのフォーム自動入力のみ</strong>です（広告・分析・トラッキングには使いません）</li>
+          <li>拡張機能をアンインストールすると保存データもブラウザから消えます</li>
+        </ul>
+      </div>
+
+      <!-- ===== グループ1: 個人情報 ===== -->
+      <fieldset class="settings-group">
+        <legend>👤 個人情報</legend>
+        <div class="settings-grid">
+          <label class="settings-field">
+            <span class="lbl">お名前 <span class="required">*</span></span>
+            <input id="settings-yourName" type="text" maxlength="100" placeholder="例: 山田 太郎" autocomplete="name">
+            <span class="lbl-hint">姓と名の間に空白を入れると、姓・名で分かれたフォームに自動分割で入ります</span>
+          </label>
+          <label class="settings-field">
+            <span class="lbl">フリガナ</span>
+            <input id="settings-furigana" type="text" maxlength="100" placeholder="例: ヤマダ タロウ">
+            <span class="lbl-hint">カタカナ／ひらがなどちらでもOK。送信先フォームの形式に合わせて自動変換します</span>
+          </label>
+        </div>
+        <div id="furiganaPreview" class="settings-preview hidden"></div>
+      </fieldset>
+
+      <!-- ===== グループ2: 連絡先 ===== -->
+      <fieldset class="settings-group">
+        <legend>📞 連絡先</legend>
+        <div class="settings-grid">
+          <label class="settings-field">
+            <span class="lbl">メールアドレス <span class="required">*</span></span>
+            <input id="settings-email" type="email" maxlength="200" placeholder="例: yamada@example.com" autocomplete="email">
+          </label>
+          <label class="settings-field">
+            <span class="lbl">電話番号</span>
+            <input id="settings-phone" type="tel" maxlength="20" placeholder="例: 03-1234-5678" autocomplete="tel">
+          </label>
+          <label class="settings-field">
+            <span class="lbl">郵便番号</span>
+            <input id="settings-postalCode" type="text" maxlength="20" placeholder="例: 150-0002" autocomplete="postal-code">
+            <span class="lbl-hint">ハイフン有無どちらでもOK。3桁＋4桁に分かれたフォームには自動分割で入ります</span>
+          </label>
+          <label class="settings-field">
+            <span class="lbl">住所</span>
+            <input id="settings-address" type="text" maxlength="200" placeholder="例: 東京都渋谷区渋谷1-2-3 ○○ビル 5F" autocomplete="street-address">
+            <span class="lbl-hint">
+              フル住所を1欄に入れてください（例: <code>東京都渋谷区渋谷1-2-3 ○○ビル 5F</code>）。
+              <strong>番地と建物名の間に半角または全角の空白を入れる</strong>と、「番地」と「建物名」が別欄に分かれたフォームでも自動で振り分けて入力します。空白がない場合は全部「番地」欄に入ります。
+            </span>
+          </label>
+        </div>
+        <div id="postalPreview" class="settings-preview hidden"></div>
+        <div id="addressPreview" class="settings-preview hidden"></div>
+      </fieldset>
+
+      <!-- ===== グループ3: 勤務先 ===== -->
+      <fieldset class="settings-group">
+        <legend>🏢 勤務先</legend>
+        <div class="settings-grid">
+          <label class="settings-field">
+            <span class="lbl">会社名（自社）</span>
+            <input id="settings-companyName" type="text" maxlength="100" placeholder="例: 株式会社サンプル" autocomplete="organization">
+          </label>
+          <label class="settings-field">
+            <span class="lbl">部署名</span>
+            <input id="settings-department" type="text" maxlength="100" placeholder="例: 営業部" autocomplete="organization-title">
+            <span class="lbl-hint">フォームに部署欄がある場合に入力されます</span>
+          </label>
+        </div>
+      </fieldset>
+
+      <div class="settings-actions">
+        <button id="saveSettingsBtn" class="primary" type="button">設定を保存</button>
+        <button id="resetSettingsBtn" class="danger" type="button">すべてリセット</button>
+        <span id="settingsStatus" class="settings-status"></span>
+      </div>
+    </section>
+
+    <!-- ===== テンプレート ===== -->
+    <section class="section">
+      <div class="section-header">
+        <h2>定型文テンプレート</h2>
+        <span class="counter" id="counter">0 / 10</span>
+      </div>
+
+      <p class="section-desc">
+        営業フォームに入れる定型文を登録できます。本文中に使える変数:
+        <br>
+        <code>{会社名}</code> ＝ 宛先（送信先）の会社名（送信ページから自動推測）
+        <br>
+        <code>{自分の名前}</code> ＝ 上の「お名前」設定値
+        <br>
+        <code>{本日の日付}</code> ＝ 入力時の日付（自動）
+      </p>
+
+      <div class="actions-bar">
+        <button id="addBtn" class="primary" type="button">+ 新しいテンプレートを作成</button>
+      </div>
+
+      <ul id="templateList" class="template-list" aria-live="polite"></ul>
+    </section>
+  </main>
+
+  <!-- ===== 編集モーダル ===== -->
+  <div id="editor" class="editor hidden" role="dialog" aria-modal="true" aria-labelledby="editorTitle">
+    <div class="editor-inner">
+      <h3 id="editorTitle">新しいテンプレート</h3>
+
+      <label for="titleInput">タイトル<span class="required">*</span></label>
+      <input
+        id="titleInput"
+        type="text"
+        maxlength="100"
+        placeholder="例: 新規Webサイト制作のご提案"
+        autocomplete="off">
+
+      <label for="bodyInput">本文<span class="required">*</span></label>
+      <p class="hint">変数ボタンを押すと、カーソル位置に挿入されます:</p>
+      <div class="var-buttons">
+        <button type="button" data-var="{会社名}" class="var-btn">＋ <code>{会社名}</code></button>
+        <button type="button" data-var="{自分の名前}" class="var-btn">＋ <code>{自分の名前}</code></button>
+        <button type="button" data-var="{本日の日付}" class="var-btn">＋ <code>{本日の日付}</code></button>
+      </div>
+      <textarea
+        id="bodyInput"
+        rows="14"
+        maxlength="5000"
+        placeholder="{会社名} ご担当者様&#10;&#10;はじめまして、{自分の名前}と申します。&#10;突然のご連絡、失礼いたします。&#10;&#10;本日は、貴社サイトを拝見し、…"></textarea>
+      <div class="char-count" id="charCount">0 / 5000</div>
+
+      <div class="editor-actions">
+        <button id="cancelBtn" type="button">キャンセル</button>
+        <button id="saveBtn" type="button" class="primary">保存</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- インポート用の隠しfile input -->
+  <input id="importFileInput" type="file" accept="application/json,.json" style="display:none">
+
+  <script src="lib/format.js"></script>
+  <script src="lib/storage.js"></script>
+  <script src="options.js"></script>
+</body>
+</html>

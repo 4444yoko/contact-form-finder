@@ -1,0 +1,48 @@
+<!--
+  Contact Form Finder
+  Copyright (c) 2026 Yuki Yokoyama
+  Licensed under the MIT License
+-->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>Contact Form Finder - 送信履歴</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <h1>Contact Form Finder</h1>
+      <span class="header-sub">送信履歴</span>
+      <nav class="header-nav">
+        <a href="options.html" class="header-link">⚙ 設定に戻る</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="notice notice-info">
+    <strong>📌 ここに記録されるのは「フォームに入力した日時」です</strong>
+    <span>あなたが実際に送信ボタンを押したかどうかは記録できません。重複対応の防止用としてご活用ください。</span>
+  </div>
+
+  <main>
+    <section class="section">
+      <div class="section-header">
+        <h2>履歴一覧</h2>
+        <span class="counter" id="counter">0 / 1000</span>
+      </div>
+
+      <div class="history-controls">
+        <input id="searchInput" type="text" placeholder="ドメイン・会社名・テンプレート名で検索">
+        <button id="clearAllBtn" type="button" class="danger">全履歴を削除</button>
+      </div>
+
+      <ul id="historyList" class="history-list" aria-live="polite"></ul>
+    </section>
+  </main>
+
+  <script src="lib/storage.js"></script>
+  <script src="history.js"></script>
+</body>
+</html>
